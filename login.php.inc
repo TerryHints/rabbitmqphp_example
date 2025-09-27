@@ -16,10 +16,10 @@ public function __construct()
 	echo "correctly connected to database".PHP_EOL;
 }
 
-public function storeSessionkey($username,$sessionkey)
+public function storesessionId($username,$sessionId)
 {
 	$un = $this->logindb->real_escape_string($username);
-	$sk = $this->logindb->real_escape_string($sessionkey);
+	$sk = $this->logindb->real_escape_string($sessionId);
 
 	$update = "UPDATE users SET session_key = '$sk' WHERE screenname = '$un'";
     $result = $this->logindb->query($update);

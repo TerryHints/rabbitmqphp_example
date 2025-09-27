@@ -27,7 +27,7 @@ function requestProcessor($request)
     case "login":
       return doLogin($request['username'],$request['password']);
     case "validate_session":
-      return doValidate($request['sessionId']);
+      return doValidate($request['username'],$['sessionId']);
     case "signup":
       return doSignup($request['username'],$request['password']);
   }
@@ -40,6 +40,11 @@ function doSignup($username,$password)
     $signup = new loginDB();
     return $signup->registerUser($username,$password);
     //return false if not valid
+}
+function doValidate($username,$sessionId)
+{
+    $validate_session = new loginDB();
+    return $login->storesessionId($username,$sessionId);
 }
 
 $server = new rabbitMQServer("testRabbitMQ.ini","testServer");
