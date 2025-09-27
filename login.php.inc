@@ -40,15 +40,31 @@ public function registerUser($username,$password)
 	$un = $this->logindb->real_escape_string($username);
 	$pw = $this->logindb->real_escape_string($password);
 	
-	$addUser = "INSERT INTO users(screenname, password)
-		VALUES
-		('$un','$pw');";
-	$response = $this->logindb->query($addUser);
 
-	if($response){
-	return 1;
-	} else {echo "Dublicate Detected".PHP_EOL;}
-	return -1;
+	$checkUser = "SELECT * FROM users WHERE screenname = '$un'";
+    $result = $this->logindb->query($checkUser);
+
+    if (!$result) {
+        echo "Error checking for user: " . $this->logindb->error . PHP_EOL;
+        return -1;
+    }
+
+    if ($result->num_rows > 0) {
+        echo "User '$un' already exists." . PHP_EOL;
+        return -1; // User already exists, don't insert
+    }
+
+    // Step 2: Insert new user
+    $addUser = "INSERT INTO users(screenname, password) VALUES ('$un', '$pw')";
+    $response = $this->logindb->query($addUser);
+
+    if ($response) {
+        echo "User '$un' registered successfully." . PHP_EOL;
+        return 1;
+    } else {
+        echo "Error registering user: " . $this->logindb->error . PHP_EOL;
+        return -1;
+    }
 }
 }
 ?>
