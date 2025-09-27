@@ -16,6 +16,23 @@ public function __construct()
 	echo "correctly connected to database".PHP_EOL;
 }
 
+public function storeSessionkey($username,$sessionkey)
+{
+	$un = $this->logindb->real_escape_string($username);
+	$sk = $this->logindb->real_escape_string($sessionkey);
+
+	$update = "UPDATE users SET session_key = '$sk' WHERE screenname = '$un'";
+    $result = $this->logindb->query($update);
+
+	 if ($result) {
+        echo "Session key stored for user '$un'".PHP_EOL;
+        return 1;
+    } else {
+        echo "Failed to store session key: " .$this->logindb->error.PHP_EOL;
+        return -1;
+    }
+}
+
 public function validateLogin($username,$password)
 {
 	$un = $this->logindb->real_escape_string($username);
