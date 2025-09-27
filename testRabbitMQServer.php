@@ -28,8 +28,18 @@ function requestProcessor($request)
       return doLogin($request['username'],$request['password']);
     case "validate_session":
       return doValidate($request['sessionId']);
+    case "signup":
+      return doSignup($request['username'],$request['password']);
   }
   return array("returnCode" => '0', 'message'=>"Server received request and processed");
+}
+function doSignup($username,$password)
+{
+    // lookup username in databas
+    // check password
+    $signup = new loginDB();
+    return $signup->registerUser($username,$password);
+    //return false if not valid
 }
 
 $server = new rabbitMQServer("testRabbitMQ.ini","testServer");

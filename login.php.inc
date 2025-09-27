@@ -6,7 +6,7 @@ private $logindb;
 
 public function __construct()
 {
-	$this->logindb = new mysqli("127.0.0.1","root","12345","login");
+	$this->logindb = new mysqli("127.0.0.1","testUser","12345","testdb");
 
 	if ($this->logindb->connect_errno != 0)
 	{
@@ -34,6 +34,21 @@ public function validateLogin($username,$password)
 		echo "passwords did not match for $username".PHP_EOL;
 	}
 	return 0;//no users matched username
+}
+public function registerUser($username,$password)
+{
+	$un = $this->logindb->real_escape_string($username);
+	$pw = $this->logindb->real_escape_string($password);
+	
+	$addUser = "INSERT INTO users(screenname, password)
+		VALUES
+		('$un','$pw');";
+	$response = $this->logindb->query($addUser);
+
+	if($response){
+	return 1;
+	} else {echo "Dublicate Detected".PHP_EOL;}
+	return -1;
 }
 }
 ?>
