@@ -109,7 +109,10 @@ public function validateLogin($username,$password)
 		        return -1;
 		    }
 		}
-		echo "passwords did not match for $username".PHP_EOL;
+		else {
+			echo "passwords did not match for $username".PHP_EOL;
+			return 0;
+		}
 	}
 	else {
 		echo "User failed password check";
@@ -155,8 +158,11 @@ public function registerUser($username,$password)
     // Hash the password
     $hash = password_hash($pw, PASSWORD_DEFAULT);
 
+    // TODO generate a random email address for testing. Obviously use real email when that gets implemented
+    $email = bin2hex(random_bytes(16)) . "@example.com";
+
     //Insert new user
-    $addUser = "INSERT INTO users(username, password_hash, email) VALUES ('$un', '$hash', 'examlple@example.com')";
+    $addUser = "INSERT INTO users(username, password_hash, email) VALUES ('$un', '$hash', '$email')";
     $response = $this->logindb->query($addUser);
     //Check query response
 
